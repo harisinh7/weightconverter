@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight and Price Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+        }
+
+        button {
+            padding: 15px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #total-container-weight, #total-price {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            button {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            input[type="text"] {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weight and Price Calculator</h1>
+        <div class="input-row">
+            <input type="text" id="gross-weight" placeholder="Enter Gross Weight" tabindex="1" oninput="updateTotalWeight()">
+            <input type="text" id="tare-weight" placeholder="Enter Tare Weight" tabindex="2" oninput="updateTotalWeight()">
+        </div>
+        <div class="input-row">
+            <input type="text" id="price" placeholder="Enter Price" tabindex="3">
+            <button onclick="calculate()" tabindex="4">Calculate</button>
+            <button onclick="clearValues()" tabindex="5">Clear</button>
+        </div>
+        <div id="total-container-weight">Total Container Weight: </div>
+        <div id="total-price">Total Price: </div>
+    </div>
+
+    <script>
+        function updateTotalWeight() {
+            var grossWeight = parseInt(document.getElementById('gross-weight').value) || 0;
+            var tareWeight = parseInt(document.getElementById('tare-weight').value) || 0;
+            var totalValue = grossWeight - tareWeight;
+            document.getElementById('total-container-weight').innerHTML = 'Total Container Weight: ' + totalValue;
+        }
+
+        function calculate() {
+            var grossWeight = parseInt(document.getElementById('gross-weight').value) || 0;
+            var tareWeight = parseInt(document.getElementById('tare-weight').value) || 0;
+            var price = parseFloat(document.getElementById('price').value) || 0;
+            var totalValue = grossWeight - tareWeight;
+            var totalPrice = totalValue * price;
+
+            // Format totalPrice as currency
+            var formattedPrice = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(totalPrice);
+
+            document.getElementById('total-container-weight').innerHTML = 'Total Container Weight: ' + totalValue;
+            document.getElementById('total-price').innerHTML = 'Total Price: ' + formattedPrice;
+        }
+
+        function clearValues() {
+            document.getElementById('gross-weight').value = '';
+            document.getElementById('tare-weight').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('total-container-weight').innerHTML = 'Total Container Weight: ';
+            document.getElementById('total-price').innerHTML = 'Total Price: ';
+        }
+    </script>
+</body>
+</html>
